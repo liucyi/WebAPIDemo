@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<script src="~/Scripts/jquery-1.8.2.js"></script>
+<script>
+    $(function() {
+        $("#btn_get").click(function() {
+
+            $.ajax({
+                url: "/api/person",
+                type: "get",
+                dataType: "json",
+                data: "",
+                success: function(message) {
+                    var html = "";
+                    $(message).each(function(i, v) {
+
+                        html += "<li>";
+                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
+                        html += "</li>";
+                    });
+                    $("#div_h").html("<ul>" + html + "</ul>");
+                }
+
+            });
+        });
+
+
+        $("#btn_post").click(function() {
+
+            var data = $("#for1").serialize();
+
+            $.ajax({
+                url: "/api/person",
+                data: data,
+                datatype: "json",
+                type: "post",
+                success: function(message) {
+                    $("#btn_get").click();
+                    var html = "";
+                    $(message).each(function(i, v) {
+
+                        html += "<li>";
+                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
+                        html += "</li>";
+                    });
+                    $("#div_h").html("<ul>" + html + "</ul>");
+                }
+            });
+        });
+
+        $("#btn_update").click(function() {
+            var data = $("#for1").serialize();
+            $.ajax({
+                url: "/api/person",
+                data: data,
+                datatype: "json",
+                type: "put",
+                success: function(message) {
+                    $("#btn_get").click();
+                    var html = "";
+                    $(message).each(function(i, v) {
+
+                        html += "<li>";
+                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
+                        html += "</li>";
+                    });
+                    $("#div_h").html("<ul>" + html + "</ul>");
+                }
+            });
+        });
+
+        $("#btn_delete").click(function() {
+
+            $.ajax({
+                url: "/api/person/" + $("#Id").val(),
+                //  data: {"":$("#Id").val()},
+                datatype: "json",
+                type: "delete",
+                success: function(message) {
+                    $("#btn_get").click();
+                    var html = "";
+                    $(message).each(function(i, v) {
+
+                        html += "<li>";
+                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
+                        html += "</li>";
+                    });
+                    $("#div_h").html("<ul>" + html + "</ul>");
+                }
+            });
+        });
+    })
+</script>
+<div class="main-content">
+    <div class="sample-content" >
+        <fieldset>
+
+            <form id="for1" style="width: 320px">
+                <input id="Id" name="Id" type="text" placeholder="ID" />
+                <input id="FirstName" name="FirstName" type="text" />
+                <input id="LastName" name="LastName" type="text" />
+            </form>
+            <div class="ui-tabs-panel">
+
+                <button id="btn_get" class="ui-button">Get</button>
+                <button id="btn_post" class="ui-button">Post</button>
+                <button id="btn_update" class="ui-button">Update</button>
+                <button id="btn_delete" class="ui-button">Delete</button>
+            </div>
+            <div id="div_h" class="main-content"></div>
+        </fieldset>
+    </div>
+</div>
+ 
+
