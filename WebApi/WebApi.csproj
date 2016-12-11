@@ -66,6 +66,14 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Swagger.Net, Version=0.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swagger.Net.0.5.5\lib\net40\Swagger.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.5.3\lib\net40\Swashbuckle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -162,6 +170,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -286,6 +295,20 @@
     <Content Include="Scripts\knockout-3.4.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="SwaggerUI\css\screen.css" />
+    <Content Include="SwaggerUI\images\pet_store_api.png" />
+    <Content Include="SwaggerUI\images\wordnik_api.png" />
+    <Content Include="SwaggerUI\index.html" />
+    <Content Include="SwaggerUI\lib\backbone-min.js" />
+    <Content Include="SwaggerUI\lib\handlebars.runtime-1.0.0.beta.6.js" />
+    <Content Include="SwaggerUI\lib\jquery.ba-bbq.min.js" />
+    <Content Include="SwaggerUI\lib\jquery.min.js" />
+    <Content Include="SwaggerUI\lib\jquery.slideto.min.js" />
+    <Content Include="SwaggerUI\lib\jquery.wiggle.min.js" />
+    <Content Include="SwaggerUI\lib\swagger.js" />
+    <Content Include="SwaggerUI\lib\underscore-min.js" />
+    <Content Include="SwaggerUI\swagger-ui.js" />
+    <Content Include="SwaggerUI\swagger-ui.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -316,6 +339,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <Content Include="SwaggerUI\lib\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
