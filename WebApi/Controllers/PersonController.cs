@@ -13,7 +13,7 @@ using WebApi.Models;
 namespace WebApi.Controllers
 {
     /// <summary>
-    /// 用户
+    /// 用户.
     /// </summary>
     public class PersonController : ApiController
     {
