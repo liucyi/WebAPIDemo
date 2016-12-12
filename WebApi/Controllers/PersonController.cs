@@ -12,6 +12,9 @@ using WebApi.Models;
 
 namespace WebApi.Controllers
 {
+    /// <summary>
+    /// 用户
+    /// </summary>
     public class PersonController : ApiController
     {
         static readonly IPersonRepository databasePlaceholder = new PersonRepository();
@@ -42,7 +45,11 @@ namespace WebApi.Controllers
 
 
 
-
+        /// <summary>
+        /// 获取单个用户信息
+        /// </summary>
+        /// <param name="id">ID号</param>
+        /// <returns></returns>
         public Person GetPersonByID(int id)
         {
 
