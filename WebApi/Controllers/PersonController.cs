@@ -18,7 +18,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// 获取所有人信息
+        /// 获取所有人信息.
         /// </summary>
         /// <returns></returns>
         public HttpResponseMessage GetAllPeople()
