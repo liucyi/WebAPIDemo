@@ -7,6 +7,13 @@ namespace WebApi.Models
 {
     public class HttpResponseMessageViewModel
     {
+        public HttpResponseMessageViewModel()
+        {
+            IsSuccess = false;
+            StatusCode = (int) System.Net.HttpStatusCode.NotFound;
+            StatusCodeDes = "";
+            Data = "";
+        }
         /// <summary>
         /// true
         /// </summary>

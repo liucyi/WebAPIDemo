@@ -8,9 +8,9 @@
     <div class="sample-content">
         <fieldset>
             <form id="for1" style="width: 320px">
-                <input id="Id" name="Id" type="text" placeholder="ID"/>
-                <input id="FirstName" name="FirstName" type="text"/>
-                <input id="LastName" name="LastName" type="text"/>
+                <input id="Id" name="Id" type="text" placeholder="ID" />
+                <input id="FirstName" name="FirstName" type="text" />
+                <input id="LastName" name="LastName" type="text" />
             </form>
             <div class="ui-tabs-panel">
 
@@ -25,142 +25,129 @@
         </fieldset>
     </div>
 </div>
- 
+
 @section scripts
 {
     <script>
-    $(function () {
-        $("#btn_get").click(function () {
+        $(function () {
+            $("#btn_get").click(function () {
 
-            $.ajax({
-                url: "/api/person",
-                type: "get",
-                dataType: "json",
-                data: "",
-                success: function (message) {
-                    console.log(message);
-                    var html = "";
-                    $(message.Data).each(function (i, v) {
+                $.ajax({
+                    url: "/api/person",
+                    type: "get",
+                    dataType: "json",
+                    data: "",
+                    success: function (message) {
+                        console.log(message);
+                        var html = "";
 
-                        html += "<li>";
-                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
-                        html += "</li>";
-                    });
-                    $("#div_h").html("<ul>" + html + "</ul>");
-                }
+                   
+                        $.each(JSON.parse(message.Data), function (i, v) {
 
+                            html += "<li>";
+                            html += v.Id + ":" + v.FirstName + "-" + v.LastName;
+                            html += "</li>";
+                        });
+                        $("#div_h").html("<ul>" + html + "</ul>");
+                    }
+
+                });
             });
-        });
 
-        $("#btn_get_id").click(function () {
+            $("#btn_get_id").click(function () {
 
-            $.ajax({
-                url: "/api/person/"+ $("#Id").val(),
-                type: "get",
-                dataType: "json",
-                data: "",
-                success: function (message) {
-                    console.log(message);
-                    var html = "";
-                    $(message.Data).each(function (i, v) {
+                $.ajax({
+                    url: "/api/person/" + $("#Id").val(),
+                    type: "get",
+                    dataType: "json",
+                    data: "",
+                    success: function (message) {
+                        console.log(message);
+                        var html = "";
+                        $.each(JSON.parse(message.Data), function (i, v) {
 
-                        html += "<li>";
-                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
-                        html += "</li>";
-                    });
-                    $("#div_h").html("<ul>" + html + "</ul>");
-                }
+                            html += "<li>";
+                            html += v.Id + ":" + v.FirstName + "-" + v.LastName;
+                            html += "</li>";
+                        });
+                        $("#div_h").html("<ul>" + html + "</ul>");
+                    }
 
+                });
             });
-        });
 
-        $("#btn_get_name").click(function () {
+            $("#btn_get_name").click(function () {
 
-            $.ajax({
-                url: "/api/person?name=" + $("#FirstName").val(),
-                type: "get",
-                dataType: "json",
-                data: "",
-                success: function (message) {
-                    console.log(message);
-                    var html = "";
-                    $(message.Data).each(function (i, v) {
+                $.ajax({
+                    url: "/api/person?name=" + $("#FirstName").val(),
+                    type: "get",
+                    dataType: "json",
+                    data: "",
+                    success: function (message) {
+                        console.log(message);
+                        var html = "";
+                        $.each(JSON.parse(message.Data), function (i, v) {
 
-                        html += "<li>";
-                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
-                        html += "</li>";
-                    });
-                    $("#div_h").html("<ul>" + html + "</ul>");
-                }
+                            html += "<li>";
+                            html += v.Id + ":" + v.FirstName + "-" + v.LastName;
+                            html += "</li>";
+                        });
+                        $("#div_h").html("<ul>" + html + "</ul>");
+                    }
 
+                });
             });
-        });
 
-        $("#btn_post").click(function () {
+            $("#btn_post").click(function () {
 
-            var data = $("#for1").serialize();
+                var data = $("#for1").serialize();
 
-            $.ajax({
-                url: "/api/person",
-                data: data,
-                datatype: "json",
-                type: "post",
-                success: function (message) {
-                    $("#btn_get").click();
-                    var html = "";
-                    $(message.Data).each(function (i, v) {
-
-                        html += "<li>";
-                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
-                        html += "</li>";
-                    });
-                    $("#div_h").html("<ul>" + html + "</ul>");
-                }
+                $.ajax({
+                    url: "/api/person",
+                    data: data,
+                    datatype: "json",
+                    type: "post",
+                    success: function (message) {
+                        $("#btn_get").click();
+                        if (message.IsSuccess == true) {
+                            $("#btn_get").click();
+                        }
+                    }
+                });
             });
-        });
 
-        $("#btn_update").click(function () {
-            var data = $("#for1").serialize();
-            $.ajax({
-                url: "/api/person",
-                data: data,
-                datatype: "json",
-                type: "put",
-                success: function (message) {
-                    $("#btn_get").click();
-                    var html = "";
-                    $(message.Data).each(function (i, v) {
-
-                        html += "<li>";
-                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
-                        html += "</li>";
-                    });
-                    $("#div_h").html("<ul>" + html + "</ul>");
-                }
+            $("#btn_update").click(function () {
+                var data = $("#for1").serialize();
+                $.ajax({
+                    url: "/api/person",
+                    data: data,
+                    datatype: "json",
+                    type: "put",
+                    success: function (message) {
+                        if (message.IsSuccess == true) {
+                            $("#btn_get").click();
+                        }
+                    }
+                });
             });
-        });
 
-        $("#btn_delete").click(function () {
+            $("#btn_delete").click(function () {
 
-            $.ajax({
-                url: "/api/person/" + $("#Id").val(),
-                //、/  data: {"":$("#Id").val()},
-                datatype: "json",
-                type: "delete",
-                success: function (message) {
-                    $("#btn_get").click();
-                    var html = "";
-                    $(message.Data).each(function (i, v) {
-
-                        html += "<li>";
-                        html += v["Id"] + ":" + v["FirstName"] + "-" + v["LastName"];
-                        html += "</li>";
-                    });
-                    $("#div_h").html("<ul>" + html + "</ul>");
-                }
+                $.ajax({
+                    url: "/api/person/" + $("#Id").val(),
+                    //、/  data: {"":$("#Id").val()},
+                    datatype: "json",
+                    type: "delete",
+                    success: function (message) {
+                        if (message.IsSuccess==true) {
+                            $("#btn_get").click();
+                        }
+                        
+                      
+                    }
+                });
             });
-        });
-    })
-</script>
+        })
+    </script>
 }
 

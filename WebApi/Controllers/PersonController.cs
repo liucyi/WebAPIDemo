@@ -62,7 +62,8 @@ namespace WebApi.Controllers
 
         public HttpResponseMessage GetPersonByID(int id)
         {
-
+            HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel();
+           
             Person person = databasePlaceholder.Get(id);
 
             if (person == null)
@@ -71,13 +72,9 @@ namespace WebApi.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
             }
-            HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
-            {
-                Data = JsonConvert.SerializeObject(person) ,
-                StatusCodeDes = "",
-                IsSuccess = true,
-                StatusCode = (int)System.Net.HttpStatusCode.OK
-            };
+            viewModel.Data = JsonConvert.SerializeObject(person);
+            viewModel.IsSuccess = true;
+            viewModel.StatusCode = (int) System.Net.HttpStatusCode.OK;
             var response = new HttpResponseMessage
             { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
 
