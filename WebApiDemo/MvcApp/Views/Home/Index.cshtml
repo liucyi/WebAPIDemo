@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Contact Management";
+}
+ 
+<script type="text/javascript">
+    $(function () {
+        loadAllContacts();
+       }
+     )
+
+    function loadAllContacts() {
+        $.ajax({
+            url     : "api/contact",
+            type    : "GET",
+            dataType: "json",
+            success : function (data) { renderContactList(data) }
+           }
+        );        
+    }
+
+    function renderContactList(contacts) {
+       
+        var html = "<table>";
+        html += "<tr><th>First Name</th><th>Last Name</th><th>Phone No.</th><th>Email Address</th><th></th></tr>";
+        for (i = 0; i < contacts.length; i++) {
+            html += "<tr><td>" + contacts[i].FirstName + "</td><td>"
+                 + contacts[i].LastName + "</td><td>" + contacts[i].PhoneNo + "</td><td>"
+                 + "<input type=\"text\" class=\"textbox long\" id=\"" + contacts[i].Id + "\" value =\"" + contacts[i].EmailAddress + "\"/>" + "</td><td>"
+                 + "<a href=\"#\" onclick = \"updateContact('" + contacts[i].Id + "')\">Update</a> &nbsp;&nbsp;&nbsp;&nbsp;"
+                 + "<a href=\"#\" onclick = \"deleteContact('" + contacts[i].Id + "')\">Delete</a>" + "</td></tr>";
+        }
+        html += "<tr><td>" + "<input id=\"firstName\" type=\"text\" class=\"textbox\"/>" + "</td><td>"
+            + "<input id=\"lastName\" type=\"text\" class=\"textbox\"/>" + "</td><td>"
+            + "<input id=\"phoneNo\" type=\"text\" class=\"textbox\"/>" + "</td><td>"
+            + "<input id=\"emailAddress\" type=\"text\" class=\"textbox long\"/>" + "</td><td>" 
+            + "<a href=\"#\" id=\"add\" onclick=\"addContact();\">Create</a> " + "</td></tr>";
+        html += "</table>";
+        $("#contacts").html(html);
+        $("table tr:odd").addClass("oddRow");
+    }
+
+    function deleteContact(id) {
+        $.ajax({
+            url     : "api/contact/" + id,
+            type    : "DELETE",
+            success : function () { loadAllContacts();}
+        });
+    }
+
+    function updateContact(id) {
+        var emailAddress = $("#" +id).attr("value");
+        $.ajax({
+            url     : "api/contact/" + id,
+            type    : "GET",
+            success : function (contact) {
+                contact.EmailAddress = emailAddress;
+                update(contact);
+            }
+        });
+    }
+
+    function update(contact) {
+        $.ajax({
+            url         : "api/contact/",
+            type        : "POST",
+            data        : contact,
+            contantType : "application/json",
+            success     : function () { loadAllContacts(); }
+        });
+    }
+
+    function addContact() {
+        var contact = new Object();
+        contact.FirstName       = $("#firstName").attr("value");
+        contact.LastName        = $("#lastName").attr("value");
+        contact.PhoneNo         = $("#phoneNo").attr("value");
+        contact.EmailAddress    = $("#emailAddress").attr("value");
+        $.ajax({
+            url         : "api/contact/",
+            type        : "PUT",
+            data        : contact,
+            contantType : "application/json",
+            success     : function () { loadAllContacts(); }
+        });
+    }
+</script>
+<div id="contacts"></div>
