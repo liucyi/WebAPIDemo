@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace WebApi.Models
@@ -10,8 +11,8 @@ namespace WebApi.Models
         public HttpResponseMessageViewModel()
         {
             IsSuccess = false;
-            StatusCode = (int) System.Net.HttpStatusCode.NotFound;
-            StatusCodeDes = "";
+            StatusCode = (int)HttpStatusCode.NotFound;
+            StatusCodeDes = Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.NotFound);
             Data = "";
         }
         /// <summary>

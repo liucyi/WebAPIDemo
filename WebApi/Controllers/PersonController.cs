@@ -63,7 +63,7 @@ namespace WebApi.Controllers
         public HttpResponseMessage GetPersonByID(int id)
         {
             HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel();
-           
+
             Person person = databasePlaceholder.Get(id);
 
             if (person == null)
@@ -74,7 +74,7 @@ namespace WebApi.Controllers
             }
             viewModel.Data = JsonConvert.SerializeObject(person);
             viewModel.IsSuccess = true;
-            viewModel.StatusCode = (int) System.Net.HttpStatusCode.OK;
+            viewModel.StatusCode = (int)System.Net.HttpStatusCode.OK;
             var response = new HttpResponseMessage
             { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
 
@@ -82,9 +82,24 @@ namespace WebApi.Controllers
 
         }
 
-        public string GetPersonByName(string FirstName, string LastName)
+        public HttpResponseMessage GetPersonByName(string FirstName, string LastName)
         {
-            return "sss";
+            var content = databasePlaceholder.GetAll().Where(c => c.FirstName == FirstName && c.LastName == LastName);
+
+            var Data = JsonConvert.SerializeObject(content);
+            HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
+            {
+                Data = Data,
+                StatusCodeDes = "",
+                IsSuccess = true,
+                StatusCode = (int)System.Net.HttpStatusCode.OK
+            };
+
+            var response = new HttpResponseMessage
+            { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
+
+
+            return response;
 
         }
 

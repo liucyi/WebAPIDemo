@@ -1,31 +1,6 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-
-
-
-<div class="main-content">
-    <div class="sample-content">
-        <fieldset>
-            <form id="for1" style="width: 320px">
-                <input id="Id" name="Id" type="text" placeholder="ID" />
-                <input id="FirstName" name="FirstName" type="text" />
-                <input id="LastName" name="LastName" type="text" />
-            </form>
-            <div class="ui-tabs-panel">
-
-                <button id="btn_get" class="ui-button">Get</button>
-                <button id="btn_get_id" class="ui-button">Get_id</button>
-                <button id="btn_get_name" class="ui-button">Get_name</button>
-                <button id="btn_post" class="ui-button">Post</button>
-                <button id="btn_update" class="ui-button">Update</button>
-                <button id="btn_delete" class="ui-button">Delete</button>
-            </div>
-            <div id="div_h" class="main-content"></div>
-        </fieldset>
-    </div>
-</div>
-
 @section scripts
 {
     <script>
@@ -40,8 +15,8 @@
                     success: function (message) {
                         console.log(message);
                         var html = "";
+                        console.log(JSON.parse(message.Data));
 
-                   
                         $.each(JSON.parse(message.Data), function (i, v) {
 
                             html += "<li>";
@@ -62,14 +37,16 @@
                     dataType: "json",
                     data: "",
                     success: function (message) {
-                        console.log(message);
-                        var html = "";
-                        $.each(JSON.parse(message.Data), function (i, v) {
 
-                            html += "<li>";
-                            html += v.Id + ":" + v.FirstName + "-" + v.LastName;
-                            html += "</li>";
-                        });
+                        console.log(message);
+                        console.log(message.Data);
+                        console.log(JSON.parse(message.Data));
+                        var model = JSON.parse(message.Data);
+                        var html = "";
+                        html += "<li>";
+                        html += model.Id + ":" + model.FirstName + "-" + model.LastName;
+                        html += "</li>";
+
                         $("#div_h").html("<ul>" + html + "</ul>");
                     }
 
@@ -77,12 +54,14 @@
             });
 
             $("#btn_get_name").click(function () {
-
+                var data = $("#for1").serialize();//序列化
                 $.ajax({
-                    url: "/api/person?name=" + $("#FirstName").val(),
+                    // url: "/api/person?FirstName=" + $("#FirstName").val() + "&LastName=" + $("#LastName").val(),
+                    url: "/api/person",
                     type: "get",
                     dataType: "json",
-                    data: "",
+                    // data: "",
+                    data: data,
                     success: function (message) {
                         console.log(message);
                         var html = "";
@@ -139,15 +118,40 @@
                     datatype: "json",
                     type: "delete",
                     success: function (message) {
-                        if (message.IsSuccess==true) {
+                        if (message.IsSuccess == true) {
                             $("#btn_get").click();
                         }
-                        
-                      
+
+
                     }
                 });
             });
         })
     </script>
 }
+
+
+<div class="main-content">
+    <div class="sample-content">
+        <fieldset>
+            <form id="for1" style="width: 320px">
+                <input id="Id" name="Id" type="text" placeholder="ID" />
+                <input id="FirstName" name="FirstName" type="text" />
+                <input id="LastName" name="LastName" type="text" />
+            </form>
+            <div class="ui-tabs-panel">
+
+                <button id="btn_get" class="ui-button">Get</button>
+                <button id="btn_get_id" class="ui-button">Get_id</button>
+                <button id="btn_get_name" class="ui-button">Get_name</button>
+                <button id="btn_post" class="ui-button">Post</button>
+                <button id="btn_update" class="ui-button">Update</button>
+                <button id="btn_delete" class="ui-button">Delete</button>
+            </div>
+            <div id="div_h" class="main-content"></div>
+        </fieldset>
+    </div>
+</div>
+
+
 
