@@ -10,12 +10,15 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using Newtonsoft.Json;
 using WebApi.Models;
+using System.Web.Http.Cors;
+using WebApi.Filter;
 
 namespace WebApi.Controllers
 {
     /// <summary>
     /// 用户
     /// </summary>
+    [RoutePrefix("api/person")]
     public class PersonController : ApiController
     {
         static readonly IPersonRepository databasePlaceholder = new PersonRepository();
@@ -26,11 +29,9 @@ namespace WebApi.Controllers
         /// </summary>
         /// <returns></returns>
 
+
         public HttpResponseMessage GetAllPeople()
         {
-
-
-
 
             var content = databasePlaceholder.GetAll();
 
@@ -38,7 +39,7 @@ namespace WebApi.Controllers
             HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
             {
                 Data = Data,
-                StatusCodeDes = "",
+                StatusCodeDes = Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.OK),
                 IsSuccess = true,
                 StatusCode = (int)System.Net.HttpStatusCode.OK
             };
@@ -52,14 +53,42 @@ namespace WebApi.Controllers
         }
 
 
+        //[HttpGet,Route("api/Person/GetAllPeople_string")]
+        //public string GetAllPeople_string()
+        //{
 
+        //    var content = databasePlaceholder.GetAll();
+
+        //    var Data = JsonConvert.SerializeObject(content);
+        //    HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
+        //    {
+        //        Data = content,
+        //        StatusCodeDes = Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.OK),
+        //        IsSuccess = true,
+        //        StatusCode = (int)System.Net.HttpStatusCode.OK
+        //    };
+
+        //    var response = new HttpResponseMessage
+        //    { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
+
+
+        //    return JsonConvert.SerializeObject(viewModel);
+
+        //}
+        //[HttpGet, Route("api/Person/GetAllPeople_int")]
+        //public IEnumerable<Person> GetAllPeople_int(Person Person)
+        //{
+
+        //    return  databasePlaceholder.GetAll();
+
+        //}
 
         /// <summary>
         /// 获取单个用户信息
         /// </summary>
         /// <param name="id">ID</param>
         /// <returns></returns>
-
+        [EnableCors(origins: "*", headers: "GET,POST", methods: "*")]
         public HttpResponseMessage GetPersonByID(int id)
         {
             HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel();
@@ -82,6 +111,7 @@ namespace WebApi.Controllers
 
         }
 
+        [CrossSite]
         public HttpResponseMessage GetPersonByName(string FirstName, string LastName)
         {
             var content = databasePlaceholder.GetAll().Where(c => c.FirstName == FirstName && c.LastName == LastName);
@@ -168,25 +198,34 @@ namespace WebApi.Controllers
         /// <returns></returns>
         public HttpResponseMessage DeletePerson(int id)
         {
+            HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
+            {
+                Data = "ID不存在，无法删除",
+                StatusCodeDes = "",
+                IsSuccess = false,
+                StatusCode = (int)HttpStatusCode.OK
+            };
+            var response = new HttpResponseMessage
+            { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
 
             Person person = databasePlaceholder.Get(id);
 
             if (person == null)
             {
 
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new HttpResponseException(response);
 
             }
 
             databasePlaceholder.Remove(id);
-            HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
-            {
-                Data = "删除",
-                StatusCodeDes = "",
-                IsSuccess = true,
-                StatusCode = (int)System.Net.HttpStatusCode.OK
-            };
-            var response = new HttpResponseMessage
+
+            viewModel.Data = "删除";
+            viewModel.StatusCodeDes = "";
+            viewModel.IsSuccess = true;
+            viewModel.StatusCode = (int)HttpStatusCode.OK;
+
+
+            response = new HttpResponseMessage
             { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
 
             return response;
