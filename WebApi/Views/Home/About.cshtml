@@ -118,8 +118,11 @@
                     datatype: "json",
                     type: "delete",
                     success: function (message) {
+
                         if (message.IsSuccess == true) {
                             $("#btn_get").click();
+                        } else {
+                            $("#div_h").html("<ul><li>" + message.Data + "</li> </ul>");
                         }
 
 

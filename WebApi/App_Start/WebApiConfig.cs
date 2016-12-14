@@ -11,7 +11,9 @@ namespace WebApi
     {
         public const string DEFAULT_ROUTE_NAME = "MyDefaultRoute";
         public static void Register(HttpConfiguration config)
-        {// Web API configuration and services
+        { // Web API 配置和服务
+            config.EnableCors();
+            // Web API configuration and services
             var json = config.Formatters.JsonFormatter;
             // 解决json序列化时的循环引用问题
             json.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -35,6 +37,8 @@ namespace WebApi
             // 若要在应用程序中禁用跟踪，请注释掉或删除以下代码行
             // 有关详细信息，请参阅: http://www.asp.net/web-api
             config.EnableSystemDiagnosticsTracing();
+
+           
         }
     }
 }

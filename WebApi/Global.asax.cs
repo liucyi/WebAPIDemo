@@ -16,6 +16,7 @@ namespace WebApi
     {
         protected void Application_Start()
         {
+            GlobalConfiguration.Configuration.EnableCors();
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
