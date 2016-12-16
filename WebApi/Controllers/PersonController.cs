@@ -251,7 +251,7 @@ namespace WebApi.Controllers
         /// <param name="person">用户实体</param>
         /// <returns></returns>
         [HttpPost]
-        public HttpResponseMessage PostPersonList([FromBody]List<Person> person)
+        public HttpResponseMessage PostPersonList(dynamic person)
         {
 
 

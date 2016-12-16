@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using Newtonsoft.Json.Serialization;
+using WebApi.Filters;
 
 namespace WebApi
 {
@@ -38,7 +39,8 @@ namespace WebApi
             // 有关详细信息，请参阅: http://www.asp.net/web-api
             config.EnableSystemDiagnosticsTracing();
 
-           
+            //异常处理
+           // config.Filters.Add(new WebApiExceptionFilterAttribute());
         }
     }
 }

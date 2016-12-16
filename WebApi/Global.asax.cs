@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.SessionState;
+using WebApi.Filters;
 
 namespace WebApi
 {
@@ -17,6 +18,7 @@ namespace WebApi
     {
         protected void Application_Start()
         {
+            //跨域
             GlobalConfiguration.Configuration.EnableCors();
             AreaRegistration.RegisterAllAreas();
 
@@ -24,8 +26,13 @@ namespace WebApi
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //异常处理
+        //    GlobalConfiguration.Configuration.Filters.Add(new WebApiExceptionFilterAttribute());
         }
-        //SessionStateBehavior
+
+
+      
+        #region SessionStateBehavior
         public override void Init()
         {
             PostAuthenticateRequest += MvcApplication_PostAuthenticateRequest;
@@ -36,6 +43,7 @@ namespace WebApi
         {
             HttpContext.Current.SetSessionStateBehavior(
                 SessionStateBehavior.Required);
-        }
+        } 
+        #endregion
     }
 }
