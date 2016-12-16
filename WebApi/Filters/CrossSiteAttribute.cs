@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http.Filters;
 
-namespace WebApi.Filter
+namespace WebApi.Filters
 {
     /// <summary>
     /// 跨域访问

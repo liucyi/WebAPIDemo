@@ -25,13 +25,14 @@ namespace WebApi.Models
 
             // For the moment, we will load some sample data during initialization. 
 
-            this.Add(new Person { LastName = "Lennon", FirstName = "John" });
+            this.Add(new Person { LastName = "Lennon", FirstName = "John", Password = "123" });
 
-            this.Add(new Person { LastName = "McCartney", FirstName = "Paul" });
+            this.Add(new Person { LastName = "McCartney", FirstName = "Paul", Password = "123" });
 
-            this.Add(new Person { LastName = "Harrison", FirstName = "George" });
+            this.Add(new Person { LastName = "Harrison", FirstName = "George", Password = "123" });
 
-            this.Add(new Person { LastName = "Starr", FirstName = "Ringo" });
+            this.Add(new Person { LastName = "Starr", FirstName = "Ringo", Password = "123" });
+            this.Add(new Person { LastName = "123", FirstName = "321", Password = "123" });
 
         }
 

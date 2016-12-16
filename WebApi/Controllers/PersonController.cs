@@ -5,13 +5,15 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Web;
 using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Newtonsoft.Json;
 using WebApi.Models;
 using System.Web.Http.Cors;
-using WebApi.Filter;
+using System.Web.Security;
+using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
@@ -19,6 +21,7 @@ namespace WebApi.Controllers
     /// 用户
     /// </summary>
     [RoutePrefix("api/person")]
+
     public class PersonController : ApiController
     {
         static readonly IPersonRepository databasePlaceholder = new PersonRepository();
@@ -41,7 +44,7 @@ namespace WebApi.Controllers
                 Data = Data,
                 StatusCodeDes = Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.OK),
                 IsSuccess = true,
-                StatusCode = (int)System.Net.HttpStatusCode.OK
+                StatusCode = (int)HttpStatusCode.OK
             };
 
             var response = new HttpResponseMessage
@@ -89,6 +92,7 @@ namespace WebApi.Controllers
         /// <param name="id">ID</param>
         /// <returns></returns>
         [EnableCors(origins: "*", headers: "GET,POST", methods: "*")]
+        [CrossSite]
         public HttpResponseMessage GetPersonByID(int id)
         {
             HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel();
@@ -111,15 +115,23 @@ namespace WebApi.Controllers
 
         }
 
-        [CrossSite]
+        [RequestAuthorize]
         public HttpResponseMessage GetPersonByName(string FirstName, string LastName)
         {
             var content = databasePlaceholder.GetAll().Where(c => c.FirstName == FirstName && c.LastName == LastName);
 
-            var Data = JsonConvert.SerializeObject(content);
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, FirstName, DateTime.Now,
+                           DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", FirstName, LastName),
+                           FormsAuthentication.FormsCookiePath);
+            //返回登录结果、用户信息、用户验证票据信息
+            var oUser = new UserInfo { bRes = true, UserName = FirstName, Password = LastName, Ticket = FormsAuthentication.Encrypt(ticket) };
+            //将身份信息保存在session中，验证当前请求是否是有效请求
+            HttpContext.Current.Session[FirstName] = oUser;
+
+            var Data = JsonConvert.SerializeObject(oUser);
             HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
             {
-                Data = Data,
+                Data = oUser,
                 StatusCodeDes = "",
                 IsSuccess = true,
                 StatusCode = (int)System.Net.HttpStatusCode.OK
@@ -232,6 +244,18 @@ namespace WebApi.Controllers
 
         }
 
+
+
+        public class UserInfo
+        {
+            public bool bRes { get; set; }
+
+            public string UserName { get; set; }
+
+            public string Password { get; set; }
+
+            public string Ticket { get; set; }
+        }
     }
 
 }

@@ -5,6 +5,25 @@
 {
     <script>
         $(function () {
+            $("#btn_login").click(function () {
+
+                $.ajax({
+                    url: "/api/Login?FirstName=" + $("#Name").val() + "&Password=" + $("#Password").val(),
+                    type: "post",
+                    dataType: "json",
+                    data: "",
+                    success: function (message) {
+                        console.log(message);
+                        var html = "";
+                        console.log(message.Data);
+                        console.log(message.Data.Ticket);
+
+                        $("#Ticket").val(message.Data.Ticket);
+                    }
+
+                });
+            });
+
             $("#btn_get").click(function () {
 
                 $.ajax({
@@ -54,7 +73,7 @@
             });
 
             $("#btn_get_name").click(function () {
-                var data = $("#for1").serialize();//序列化
+                var data = $("#for1").serialize(); //序列化
                 $.ajax({
                     // url: "/api/person?FirstName=" + $("#FirstName").val() + "&LastName=" + $("#LastName").val(),
                     url: "/api/person",
@@ -62,16 +81,25 @@
                     dataType: "json",
                     // data: "",
                     data: data,
+                    beforeSend: function (XHR) {
+                        //发送ajax请求之前向http的head里面加入验证信息
+                        XHR.setRequestHeader('Authorization', 'BasicAuth ' + $("#Ticket").val());
+                    },
                     success: function (message) {
                         console.log(message);
                         var html = "";
-                        $.each(JSON.parse(message.Data), function (i, v) {
+                        if (message.IsSuccess==true) {
+                            $.each(JSON.parse(message.Data), function (i, v) {
 
-                            html += "<li>";
-                            html += v.Id + ":" + v.FirstName + "-" + v.LastName;
-                            html += "</li>";
-                        });
-                        $("#div_h").html("<ul>" + html + "</ul>");
+                                html += "<li>";
+                                html += v.Id + ":" + v.FirstName + "-" + v.LastName;
+                                html += "</li>";
+                            });
+                            $("#div_h").html("<ul>" + html + "</ul>");
+                        } else {
+                            $("#div_h").html("<ul><li></li></ul>");
+                        }
+                        
                     }
 
                 });
@@ -133,14 +161,32 @@
     </script>
 }
 
+<div class="main-content">
+    <div class="sample-content">
+        <fieldset>
+            <legend> Login</legend>
+            <form id="for_login" style="width: 320px">
 
+                <input id="Name" name="Name" placeholder="Name" type="text" />
+                <input id="Password" name="Password" placeholder="Password" type="text" />
+            </form>
+            <div class="ui-tabs-panel">
+
+                <button id="btn_login" class="ui-button">Login</button>
+
+            </div>
+            <div id="div_h" class="main-content"></div>
+        </fieldset>
+    </div>
+</div>
 <div class="main-content">
     <div class="sample-content">
         <fieldset>
             <form id="for1" style="width: 320px">
+                <input id="Ticket" name="Ticket" type="text" placeholder="Ticket" />
                 <input id="Id" name="Id" type="text" placeholder="ID" />
-                <input id="FirstName" name="FirstName" type="text" />
-                <input id="LastName" name="LastName" type="text" />
+                <input id="FirstName" name="FirstName"placeholder="FirstName" type="text" />
+                <input id="LastName" name="LastName" placeholder="LastName"type="text" />
             </form>
             <div class="ui-tabs-panel">
 
