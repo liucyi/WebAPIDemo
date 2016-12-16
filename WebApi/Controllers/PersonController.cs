@@ -245,6 +245,30 @@ namespace WebApi.Controllers
         }
 
 
+        /// <summary>
+        /// 保存用户信息
+        /// </summary>
+        /// <param name="person">用户实体</param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage PostPersonList([FromBody]List<Person> person)
+        {
+
+
+            HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
+            {
+                Data = person,
+                StatusCodeDes = "",
+                IsSuccess = true,
+                StatusCode = (int)System.Net.HttpStatusCode.OK
+            };
+            var response = new HttpResponseMessage
+            { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
+
+            return response;
+
+
+        }
 
         public class UserInfo
         {

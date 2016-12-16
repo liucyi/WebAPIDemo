@@ -18,7 +18,7 @@ using WebApi.Filters;
 namespace WebApi.Controllers
 {
     /// <summary>
-    /// 用户
+    /// 登录
     /// </summary>
 
  
@@ -27,8 +27,8 @@ namespace WebApi.Controllers
     {
         static readonly IPersonRepository databasePlaceholder = new PersonRepository();
 
-
-
+       
+        [HttpPost]
         public HttpResponseMessage Post(string FirstName, string Password)
         {
             var content = databasePlaceholder.GetAll().Where(c => c.FirstName == FirstName && c.Password == Password);

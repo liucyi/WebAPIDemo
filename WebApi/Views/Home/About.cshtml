@@ -8,8 +8,8 @@
             $("#btn_login").click(function () {
 
                 $.ajax({
-                    url: "/api/Login?FirstName=" + $("#Name").val() + "&Password=" + $("#Password").val(),
-                    type: "post",
+                    url: "/api/Login/post?FirstName=" + $("#Name").val() + "&Password=" + $("#Password").val(),
+                    type: "GET",
                     dataType: "json",
                     data: "",
                     success: function (message) {
@@ -27,7 +27,7 @@
             $("#btn_get").click(function () {
 
                 $.ajax({
-                    url: "/api/person",
+                    url: "/api/person/GetAllPeople",
                     type: "get",
                     dataType: "json",
                     data: "",
@@ -51,7 +51,7 @@
             $("#btn_get_id").click(function () {
 
                 $.ajax({
-                    url: "/api/person/" + $("#Id").val(),
+                    url: "/api/person/GetPersonByID/" + $("#Id").val(),
                     type: "get",
                     dataType: "json",
                     data: "",
@@ -76,7 +76,7 @@
                 var data = $("#for1").serialize(); //序列化
                 $.ajax({
                     // url: "/api/person?FirstName=" + $("#FirstName").val() + "&LastName=" + $("#LastName").val(),
-                    url: "/api/person",
+                    url: "/api/person/GetPersonByName",
                     type: "get",
                     dataType: "json",
                     // data: "",
@@ -110,7 +110,7 @@
                 var data = $("#for1").serialize();
 
                 $.ajax({
-                    url: "/api/person",
+                    url: "/api/person/PostPerson",
                     data: data,
                     datatype: "json",
                     type: "post",
@@ -122,11 +122,32 @@
                     }
                 });
             });
+            $("#btn_post_list").click(function () {
 
+                var arr = [
+          { FirstName: "Jim", LastName: "1988-09-11" },
+          { FirstName: "Lilei", LastName: "1990-12-11" },
+          { FirstName: "Lucy", LastName: "1986-01-10" }
+                ];
+                 
+                $.ajax({
+                    url: "/api/person/PostPersonList",
+                    data: JSON.stringify(arr),
+                    datatype: "json",
+                 //   contentType: 'application/json',
+                    type: "post",
+                    success: function (message) {
+                      
+                        if (message.IsSuccess == true) {
+                        //    $("#btn_get").click();
+                        }
+                    }
+                });
+            });
             $("#btn_update").click(function () {
                 var data = $("#for1").serialize();
                 $.ajax({
-                    url: "/api/person",
+                    url: "/api/person/PutPerson",
                     data: data,
                     datatype: "json",
                     type: "put",
@@ -141,7 +162,7 @@
             $("#btn_delete").click(function () {
 
                 $.ajax({
-                    url: "/api/person/" + $("#Id").val(),
+                    url: "/api/person/DeletePerson/" + $("#Id").val(),
                     //、/  data: {"":$("#Id").val()},
                     datatype: "json",
                     type: "delete",
@@ -194,6 +215,7 @@
                 <button id="btn_get_id" class="ui-button">Get_id</button>
                 <button id="btn_get_name" class="ui-button">Get_name</button>
                 <button id="btn_post" class="ui-button">Post</button>
+                <button id="btn_post_list" class="ui-button">Post_list</button>
                 <button id="btn_update" class="ui-button">Update</button>
                 <button id="btn_delete" class="ui-button">Delete</button>
             </div>
