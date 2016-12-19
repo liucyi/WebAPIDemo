@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
 using Newtonsoft.Json.Serialization;
 using WebApi.Filters;
 
@@ -26,7 +27,7 @@ namespace WebApi
 
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-
+           
             config.Routes.MapHttpRoute(
                 name: DEFAULT_ROUTE_NAME,
                 routeTemplate: "api/{controller}/{id}",
@@ -34,6 +35,15 @@ namespace WebApi
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            #region api版本控制
+            //api版本控制
+            //config.Routes.MapHttpRoute(
+            //     name: "DefaultVersion",
+            //     routeTemplate: "api/{version}/{controller}/{id}",
+            //     defaults: new { id = RouteParameter.Optional }
+            // );
+            //config.Services.Replace(typeof(IHttpControllerSelector), new VersionHttpControllerSelector((config))); 
+            #endregion
             ////2.自定义路由一：匹配到action
             //config.Routes.MapHttpRoute(
             //    name: "ActionApi",
