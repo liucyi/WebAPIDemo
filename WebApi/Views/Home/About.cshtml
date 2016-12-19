@@ -8,8 +8,8 @@
             $("#btn_login").click(function () {
 
                 $.ajax({
-                    url: "/api/Login/post?FirstName=" + $("#Name").val() + "&Password=" + $("#Password").val(),
-                    type: "GET",
+                    url: "/api/Login?FirstName=" + $("#Name").val() + "&Password=" + $("#Password").val(),
+                    type: "post",
                     dataType: "json",
                     data: "",
                     success: function (message) {
@@ -27,7 +27,7 @@
             $("#btn_get").click(function () {
 
                 $.ajax({
-                    url: "/api/person/GetAllPeople",
+                    url: "/api/person",
                     type: "get",
                     dataType: "json",
                     data: "",
@@ -147,7 +147,7 @@
             $("#btn_update").click(function () {
                 var data = $("#for1").serialize();
                 $.ajax({
-                    url: "/api/person/PutPerson",
+                    url: "/api/person",
                     data: data,
                     datatype: "json",
                     type: "put",
@@ -162,7 +162,7 @@
             $("#btn_delete").click(function () {
 
                 $.ajax({
-                    url: "/api/person/DeletePerson/" + $("#Id").val(),
+                    url: "/api/person/" + $("#Id").val(),
                     //、/  data: {"":$("#Id").val()},
                     datatype: "json",
                     type: "delete",

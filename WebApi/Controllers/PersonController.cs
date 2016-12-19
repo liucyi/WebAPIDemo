@@ -20,7 +20,7 @@ namespace WebApi.Controllers
     /// <summary>
     /// 用户
     /// </summary>
-    [RoutePrefix("api/person")]
+    [RoutePrefix("api/Person")]
 
     public class PersonController : ApiController
     {
@@ -32,7 +32,8 @@ namespace WebApi.Controllers
         /// </summary>
         /// <returns></returns>
 
-
+         // [Route("GetAllPeople")]
+   
         public HttpResponseMessage GetAllPeople()
         {
 
@@ -42,7 +43,7 @@ namespace WebApi.Controllers
             HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
             {
                 Data = Data,
-                StatusCodeDes = Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.OK),
+                StatusCodeDes = System.Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.OK),
                 IsSuccess = true,
                 StatusCode = (int)HttpStatusCode.OK
             };
@@ -91,7 +92,9 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="id">ID</param>
         /// <returns></returns>
+        [Route("GetPersonByID/{id}")]
         [EnableCors(origins: "*", headers: "GET,POST", methods: "*")]
+ 
         [CrossSite]
         public HttpResponseMessage GetPersonByID(int id)
         {
@@ -115,7 +118,9 @@ namespace WebApi.Controllers
 
         }
 
+        [Route("GetPersonByName/{FirstName}/{LastName}")]
         [RequestAuthorize]
+
         public HttpResponseMessage GetPersonByName(string FirstName, string LastName)
         {
             var content = databasePlaceholder.GetAll().Where(c => c.FirstName == FirstName && c.LastName == LastName);
@@ -151,6 +156,7 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="person">用户实体</param>
         /// <returns></returns>
+        [HttpPost]
         public HttpResponseMessage PostPerson(Person person)
         {
 
@@ -178,6 +184,7 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="person">用户实体</param>
         /// <returns></returns>
+        [HttpPut]
         public HttpResponseMessage PutPerson(Person person)
         {
 
@@ -208,6 +215,7 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="id">用户ID</param>
         /// <returns></returns>
+        [HttpDelete]
         public HttpResponseMessage DeletePerson(int id)
         {
             HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
@@ -250,6 +258,7 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="person">用户实体</param>
         /// <returns></returns>
+        [Route("PostPersonList")]
         [HttpPost]
         public HttpResponseMessage PostPersonList(dynamic person)
         {

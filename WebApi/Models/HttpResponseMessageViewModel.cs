@@ -12,9 +12,9 @@ namespace WebApi.Models
         {
             IsSuccess = false;
             StatusCode = (int)HttpStatusCode.NotFound;
-            StatusCodeDes = Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.NotFound);
+            StatusCodeDes =System. Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.NotFound);
             Data = "";
-        }
+        } 
         /// <summary>
         /// true
         /// </summary>

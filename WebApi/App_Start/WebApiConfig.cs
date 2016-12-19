@@ -12,7 +12,10 @@ namespace WebApi
     {
         public const string DEFAULT_ROUTE_NAME = "MyDefaultRoute";
         public static void Register(HttpConfiguration config)
-        { // Web API 配置和服务
+        {
+
+            
+            // Web API 配置和服务
             config.EnableCors();
             // Web API configuration and services
             var json = config.Formatters.JsonFormatter;
@@ -26,9 +29,25 @@ namespace WebApi
 
             config.Routes.MapHttpRoute(
                 name: DEFAULT_ROUTE_NAME,
-                routeTemplate: "api/{controller}/{action}/{id}",
+                routeTemplate: "api/{controller}/{id}",
+                //           routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            ////2.自定义路由一：匹配到action
+            //config.Routes.MapHttpRoute(
+            //    name: "ActionApi",
+            //    routeTemplate: "actionapi/{controller}/{action}/{id}",
+            //    defaults: new { id = RouteParameter.Optional }
+            //);
+
+            ////3.自定义路由二
+            //config.Routes.MapHttpRoute(
+            //    name: "TestApi",
+            //    routeTemplate: "testapi/{controller}/{ordertype}/{id}",
+            //    defaults: new { ordertype = "aa", id = RouteParameter.Optional }
+            //);
+
 
             // 取消注释下面的代码行可对具有 IQueryable 或 IQueryable<T> 返回类型的操作启用查询支持。
             // 若要避免处理意外查询或恶意查询，请使用 QueryableAttribute 上的验证设置来验证传入查询。
@@ -40,7 +59,10 @@ namespace WebApi
             config.EnableSystemDiagnosticsTracing();
 
             //异常处理
-           // config.Filters.Add(new WebApiExceptionFilterAttribute());
+            // config.Filters.Add(new WebApiExceptionFilterAttribute());
+
+            // 启用Web API特性路由
+          config.MapHttpAttributeRoutes();
         }
     }
 }

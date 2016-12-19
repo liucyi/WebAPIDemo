@@ -88,7 +88,7 @@ namespace WebApi.Filters
                 HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
                 {
                     Data = "票据错误",
-                    StatusCodeDes = Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.NonAuthoritativeInformation),
+                    StatusCodeDes = System.Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.NonAuthoritativeInformation),
                     IsSuccess = false,
                     StatusCode = (int)System.Net.HttpStatusCode.NonAuthoritativeInformation
                 };

@@ -22,7 +22,7 @@ namespace WebApi.Controllers
     /// </summary>
 
  
-    [RoutePrefix("api/Login/")]
+    [RoutePrefix("api/Login")]
     public class LoginController : ApiController
     {
         static readonly IPersonRepository databasePlaceholder = new PersonRepository();

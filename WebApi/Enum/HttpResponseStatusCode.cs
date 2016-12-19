@@ -5,9 +5,9 @@ using System.Web;
 
 namespace WebApi.Enum
 {
-    public class HttpResponseStatusCode
+    public static class HttpResponseStatusCode
     {
-        public enum HttpStatusCode
+        public   enum HttpStatusCode
         {
             // 摘要: 
             //     等效于 HTTP 状态 100。 System.Net.HttpStatusCode.Continue 指示客户端可能继续其请求。
