@@ -14,7 +14,6 @@ using WebApi.Models;
 using System.Web.Http.Cors;
 using System.Web.Security;
 using WebApi.Filters;
-using WebApi.Repository;
 
 namespace WebApi.Controllers
 {
