@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApi.Models
+namespace WebApi.Repository
 {
-    interface IPersonRepository
+   public   interface IPersonRepository
     {
         IEnumerable<Person> GetAll();
 

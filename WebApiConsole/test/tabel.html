@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入样式 -->
+
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <!--<link href="http://select2.github.io/select2/bootstrap/css/bootstrap.css" rel="stylesheet" />-->
+</head>
+
+<body>
+    <div id="app">
+
+        <template>
+<h3>小区</h3> 
+ 
+         <select    v-model="value8" >
+    <option v-for="item in options" v-bind:value="item.value">{{item.label}}</option>
+</select>
+</template>
+        <template>
+  <el-select v-model="value8" filterable placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+</template>
+    </div>
+</body>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="http://select2.github.io/select2/select2-3.5.3/select2.js"></script>
+
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                options: [{
+                    value: '115200',
+                    label: '80岛'
+                }],
+                value8: '',
+                visible: false
+            }
+        },
+        methods: {
+
+        }
+    })
+</script>
+
+</html>

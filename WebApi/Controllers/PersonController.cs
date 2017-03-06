@@ -14,6 +14,7 @@ using WebApi.Models;
 using System.Web.Http.Cors;
 using System.Web.Security;
 using WebApi.Filters;
+using WebApi.Repository;
 
 namespace WebApi.Controllers
 {
@@ -39,10 +40,10 @@ namespace WebApi.Controllers
 
             var content = databasePlaceholder.GetAll();
 
-            var Data = JsonConvert.SerializeObject(content);
+        //   var Data = JsonConvert.SerializeObject(content);
             HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
             {
-                Data = Data,
+                Data = content,
                 StatusCodeDes = System.Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.OK),
                 IsSuccess = true,
                 StatusCode = (int)HttpStatusCode.OK
@@ -108,7 +109,8 @@ namespace WebApi.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
             }
-            viewModel.Data = JsonConvert.SerializeObject(person);
+            //    viewModel.Data = JsonConvert.SerializeObject(person);
+            viewModel.Data = person;
             viewModel.IsSuccess = true;
             viewModel.StatusCode = (int)System.Net.HttpStatusCode.OK;
             var response = new HttpResponseMessage

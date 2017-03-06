@@ -1,0 +1,127 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入样式 -->
+    <style>
+        .el-table .info-row {
+            background: #c930f5;
+        }
+
+        .el-table .positive-row {
+            background: #e2f094;
+        }
+    </style>
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+</head>
+
+<body>
+    <div id="app">
+        <template>
+            <el-table stripe border v-bind:data="tableData2"
+                      v-on:selection-change="handleSelectionChange"
+                      style="width: 100%">
+                <el-table-column type="selection"
+                                 width="55">
+                </el-table-column>
+
+                <el-table-column prop="date"
+                                 label="日期"
+                                 width="180">
+                </el-table-column>
+                <el-table-column label="姓名"
+                                 width="180">
+                    <template scope="scope">
+                        <el-popover trigger="hover" placement="top">
+                            <p>姓名: {{ scope.row.name }}</p>
+                            <p>住址: {{ scope.row.address }}</p>
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag>{{ scope.row.name }}</el-tag>
+                            </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+
+
+                <el-table-column prop="name" label="姓名" width="180">
+                </el-table-column>
+
+                <el-table-column prop="address" label="地址">
+                </el-table-column>
+                <el-table-column label="操作">
+                    <template scope="scope">
+                        <el-button size="small"
+                                   v-on:click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="small"
+                                   v-on:click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+
+            </el-table>
+        </template>
+    </div>
+
+
+</body>
+
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                tableData2: [{
+                    date: '2016-05-02',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-01',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }],
+
+            };
+        },
+        methods: {
+            tableRowClassName(row, index) {
+                if (index === 1) {
+                    return 'info-row';
+                } else if (index === 3) {
+                    return 'positive-row';
+                }
+                return '';
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(val);
+            },
+            handleEdit(index, row) {
+
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            }
+
+
+        }
+    })
+</script>
+
+</html>

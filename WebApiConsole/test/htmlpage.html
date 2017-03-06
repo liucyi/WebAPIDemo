@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="style.css" /> 
+    <link href="Bootstrap.css" rel="stylesheet" />
+    <style>
+        input {
+            text-indent: 10px;
+        }
+    </style>
+</head>
+<body>
+ 
+    <div class="game">
+        <div>
+            水司： <input id="customerName" type="text" /> 片区：<input id="Text1" type="text" />小区：<input id="Text1" type="text" />
+            <br />
+            工程编号：<input id="Text1" type="text" />申报日期<input id="Text1" type="text" />-<input id="Text1" type="text" />申报人：<input id="Text1" type="text" /><br><br>
+            <button v-on:click="getCustomerby()">查询</button> <button v-on:click="putCustomer()">修改</button> <button v-on:click="deleteCustomer()">删除</button> <button v-on:click="postCustomer()">创建</button>
+            <form> 
+
+
+            </form>
+        </div>
+        <table class="table">
+            <thead>
+                <tr class="table-header-group">
+                    <th>ProjectNumber</th>
+                    <th>ProjectDate</th>
+                    <th>CustomerName</th>
+                    <th>AreaName</th>
+                    <th>GardenName</th>
+            </thead>
+            <tbody>
+
+                <tr v-for="entry  in dataList">
+                    <td> {{entry.projectNumber}}</td>
+                    <td> {{entry.projectDate}}</td>
+                    <td> {{entry.customerName}}</td>
+                    <td> {{entry.areaName}}</td>
+                    <td> {{entry.gardenName}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+ 
+</body>
+<script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+
+<script src="https://cdn.bootcss.com/vue/2.1.10/vue.js"></script>
+
+<script>
+
+    new Vue({
+        el: '.game',
+        data: {
+            dataList: ""
+        },
+        mounted: function () {
+            this.getCustomers();
+        },
+        methods: {
+            getCustomers: function () {
+                var vm = this;
+                axios.get('http://localhost:1143/api/241/Project/ProjectSearchAll')
+                        .then(function (response) {
+                            alert(1)
+                            console.log(response.data);
+
+                            vm.dataList = response.data;
+                        })
+                        .catch(function (error) {
+                        });
+            },
+
+            getCustomerby:function(){
+              var vm = this;
+                axios.get("http://localhost:1143/api/241/Project/ProjectSearchById",{
+                        params:{
+                            ID:1
+                        }
+                })
+                .then(function (response) {
+                            alert(2)
+                            console.log(response.data);
+                         vm.dataList = response.data;
+                           
+                        })
+                .catch(function (error) {
+                        });
+            },
+             putCustomer:function(){
+                alert("put-1")
+              var vm = this;
+                axios.put("http://localhost:1143/api/241/Project/2" )
+                .then(function (response) {
+                            alert("put-2")
+                          //  console.log(response.data);
+                        // vm.dataList = response.data;
+                           
+                        })
+                .catch(function (error) {
+                        });
+            },
+
+             postCustomer:function(){
+                     alert("post-1")
+              var vm = this;
+                axios.post("http://localhost:1143/api/241/Project",{
+                         id: 2,
+                        projectNumber: "002",
+                        projectDate: "2017-03-06T00:00:00",
+                        declarer: "test",
+                        waterCorpId: 0,
+                        areaId: 54310,
+                        gardenId: 57055,
+                        waterSupplyType: 0,
+                        simcardOwner: 0,
+                        builderType: 0,
+                        isRenewal: 0,
+                        content: "put"
+                })
+                .then(function (response) {
+                            alert("post-2")
+                         //   console.log(response.data);
+                        // vm.dataList = response.data;
+                           
+                        })
+                .catch(function (error) {
+                        });
+            },
+              deleteCustomer:function(){
+              var vm = this; 
+               alert("delete-1")
+                axios.delete("http://localhost:1143/api/241/Project/1")
+                .then(function (response) {
+                            alert("delete-2")
+                         this.getCustomers();
+                            console.log(response.data);
+                       //  vm.dataList = response.data;
+                           
+                        })
+                .catch(function (error) {
+                        });
+            }
+        },
+        watch: {
+            question: function (val) {
+            }
+        }
+    })
+</script>
+</html>
