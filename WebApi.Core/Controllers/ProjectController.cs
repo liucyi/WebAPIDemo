@@ -7,60 +7,60 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApi.Core.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/{customerid}/[controller]")]
     public class ProjectController : Controller
     {
 
         private IProjectRepository projectRepository = new ProjectRepository();
         // GET: api/values
         [HttpGet]
-        public HttpResponseMessage Get()
+
+        public IEnumerable<Project> Get()
         {
             var model = projectRepository.GetAll();
-
-            HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
-            {
-                Data = model,
-                StatusCodeDes = System.Enum.GetName(typeof(HttpStatusCode), HttpStatusCode.OK),
-                IsSuccess = true,
-                StatusCode = (int)HttpStatusCode.OK
-            };
-
-            var response = new HttpResponseMessage
-            { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
-
-
-            return response;
+            return model;
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Project Get(int id)
         {
-            return "value";
+            var model = projectRepository.Get(id);
+            return model;
+        }
+        [HttpGet]
+        [Route("SearchAll")]
+        public IEnumerable<Project> Get([FromBody]Project value)
+        {
+            var model = projectRepository.GetAll();
+            return model;
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Project value)
         {
+            var model = projectRepository.Add(value);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]Project value)
         {
+            var model = projectRepository.Update(value);
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            projectRepository.Remove(id);
         }
     }
 }

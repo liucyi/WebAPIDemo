@@ -60,6 +60,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="test\Data\chaobiao.json" />
+    <None Include="test\Data\xiaoqu.json" />
+    <None Include="test\Scripts\element-ui\fonts\element-icons.woff" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebApi\WebApi.csproj">
@@ -70,6 +73,25 @@
   <ItemGroup>
     <Content Include="index.html" />
     <Content Include="jquery-3.1.1.js" />
+    <Content Include="test\chosen - 复制.html" />
+    <Content Include="test\chosen.html" />
+    <Content Include="test\htmlpage.html" />
+    <Content Include="test\index.html" />
+    <Content Include="test\index2.html" />
+    <Content Include="test\jquery-3.1.1.js" />
+    <Content Include="test\Scripts\Bootstrap.css" />
+    <Content Include="test\Scripts\chosen\chosen.css" />
+    <Content Include="test\Scripts\chosen\chosen.jquery.js" />
+    <Content Include="test\Scripts\chosen\jquery-1.10.2.min.js" />
+    <Content Include="test\Scripts\element-ui\index.css" />
+    <Content Include="test\Scripts\element-ui\index.js" />
+    <Content Include="test\Scripts\style.css" />
+    <Content Include="test\Scripts\vue-1.0.26.js" />
+    <Content Include="test\Scripts\vue-2.1.8.js" />
+    <Content Include="test\Scripts\vue-resource.js" />
+    <Content Include="test\select.html" />
+    <Content Include="test\select2.html" />
+    <Content Include="test\tabel.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
