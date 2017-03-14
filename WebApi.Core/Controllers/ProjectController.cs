@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,7 +21,7 @@ namespace WebApi.Core.Controllers
         private IProjectRepository projectRepository = new ProjectRepository();
         // GET: api/values
         [HttpGet]
-
+      
         public IEnumerable<Project> Get()
         {
             var model = projectRepository.GetAll();
@@ -34,10 +35,13 @@ namespace WebApi.Core.Controllers
             var model = projectRepository.Get(id);
             return model;
         }
+        //启用跨域
+        [EnableCors("AllowSameDomain")]
         [HttpGet]
         [Route("SearchAll")]
-        public IEnumerable<Project> Get([FromBody]Project value)
+        public IEnumerable<Project> Get(int watercorpid, int areaid, int gardenid, string projectNumber, DateTime projectEndDate, DateTime projectStartDate, string declarer)
         {
+
             var model = projectRepository.GetAll();
             return model;
         }

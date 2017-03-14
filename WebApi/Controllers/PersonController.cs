@@ -48,10 +48,12 @@ namespace WebApi.Controllers
                 StatusCode = (int)HttpStatusCode.OK
             };
 
+
+
             var response = new HttpResponseMessage
             { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
 
-
+          
             return response;
 
         }
@@ -278,7 +280,31 @@ namespace WebApi.Controllers
 
 
         }
+        /// <summary>
+        /// 保存用户信息
+        /// </summary>
+        /// <param name="person">用户实体</param>
+        /// <returns></returns>
+        [Route("PostPersonList")]
+        [HttpPost]
+        public HttpResponseMessage PostPersonList1(dynamic person)
+        {
 
+
+            HttpResponseMessageViewModel viewModel = new HttpResponseMessageViewModel()
+            {
+                Data = person,
+                StatusCodeDes = "",
+                IsSuccess = true,
+                StatusCode = (int)System.Net.HttpStatusCode.OK
+            };
+            var response = new HttpResponseMessage
+            { Content = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json") };
+
+            return response;
+
+
+        }
         public class UserInfo
         {
             public bool bRes { get; set; }

@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!--  <link rel="stylesheet" href="style.css" />
+      -->
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/fonts/element-icons.woff">-->
+    <link href="Scripts/element-ui/index.css" rel="stylesheet" />
+
+    <link href="Scripts/Bootstrap.css" rel="stylesheet" />
+
+    <style>
+        .game {
+            margin: 25px;
+        }
+
+        .el-input {
+            width: 150px;
+        }
+
+        .el-select .el-input {
+            width: 250px;
+        }
+
+        .treeview-custom {
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game">
+        <div>
+            <el-tree v-bind:data="treedata"
+                     v-bind:props="defaultProps"
+                     accordion
+                     v-on:node-click="handleNodeClick">
+            </el-tree>
+        </div>
+
+        <div>
+
+            水司： <el-select v-model="watercorpid" filterable placeholder="请选择">
+                <el-option v-for="item in watercorp_options"
+                           v-bind:label="item.name"
+                           v-bind:value="item.id">
+                </el-option>
+            </el-select>
+            片区：<el-select v-model="areaId" filterable placeholder="请选择">
+                <el-option v-for="item in area_options"
+                           v-bind:label="item.name"
+                           v-bindvalue="item.id">
+                </el-option>
+            </el-select>
+
+            小区：<el-select v-model="gardenId" filterable placeholder="请选择">
+                <el-option v-for="item in garden_options"
+                           v-bind:label="item.name"
+                           v-bind:value="item.id">
+                </el-option>
+            </el-select>
+            <br />
+            工程编号： <el-input v-model="projectNumber" placeholder="工程编号"></el-input>
+            申报日期 <el-date-picker v-model="projectStartDate"
+                                 type="date"
+                                 placeholder="选择日期"
+                                 v-bind:picker-options="pickerOptions0">
+            </el-date-picker>-
+            <el-date-picker v-model="projectEndDate"
+                            type="date"
+                            placeholder="选择日期"
+                            v-bind:picker-options="pickerOptions0">
+            </el-date-picker><br><br>
+
+
+
+
+            <el-button type="primary" icon="search" v-on:click="getProjects()">搜索</el-button>
+            <el-button type="primary" icon="edit" v-on:click="putProject()">删除</el-button>
+            <el-button type="primary" v-on:click="postProject()">创建</el-button>
+            <el-button type="primary" icon="delete" v-on:click="deleteProject()">创建</el-button>
+            <form></form>
+        </div>
+        <table class="table">
+            <thead>
+                <tr class="table-header-group">
+                    <th>ProjectNumber</th>
+                    <th>ProjectDate</th>
+                    <th>WaterCorpName</th>
+                    <th>AreaName</th>
+                    <th>GardenName</th>
+            </thead>
+            <tbody>
+
+                <tr v-for="entry  in dataList">
+                    <td> {{entry.projectNumber}}</td>
+                    <td> {{entry.projectDate}}</td>
+                    <td> {{entry.waterCorpName}}</td>
+                    <td> {{entry.areaName}}</td>
+                    <td> {{entry.gardenName}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <el-table v-bind:data="tableData"
+                  border
+                  style="width: 100%">
+            <el-table-column prop="projectNumber"
+                             label="ProjectNumber"
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="projectDate"
+                             label="ProjectDate"
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="waterCorpName"
+                             label="WaterCorpName"
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="areaName"
+                             label="AreaName"
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="gardenName"
+                             label="GardenName"
+                             width="180">
+            </el-table-column>
+            <el-table-column label="操作">
+                <template scope="scope">
+                    <el-button size="small"
+                               v-click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="small"
+                               type="danger"
+                               v-click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="block">
+            <el-pagination v-on:size-change="handleSizeChange"
+                           v-on:current-change="handleCurrentChange"
+                           v-bind:current-page="currentPage"
+                           v-bind:page-sizes="[2,5,10, 20, 30, 40]"
+                           v-bind:page-size="pageSize"
+                           layout="total,sizes, prev, pager, next"
+                           v-bind:total="pageTotal">
+            </el-pagination>
+        </div>
+
+    </div>
+
+</body>
+<script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+
+<script src="https://cdn.bootcss.com/vue/2.1.10/vue.js"></script>
+<script src="Scripts/element-ui/index.js"></script>
+<script>
+
+    new Vue({
+        el: '.game',
+        data: {
+            dataList: "", watercorpid: "", areaId: "", gardenId: "",
+            watercorp_options: "",
+            area_options: "",
+            garden_options: "",
+            projectStartDate: "",
+            projectEndDate: "",
+            treedata: [{
+                label: '一级 1',
+                children: [{
+                    label: '二级 1-1',
+                    children: [{
+                        label: '三级 1-1-1'
+                    }]
+                }]
+            }, {
+                label: '一级 2',
+                children: [{
+                    label: '二级 2-1',
+                    children: [{
+                        label: '三级 2-1-1'
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                        label: '三级 2-2-1'
+                    }]
+                }]
+            }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1'
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'label'
+            },
+            tableData: "",
+            currentPage: 5,
+            pageSize: 100, pageTotal: 1000
+
+        },
+        mounted: function () {
+            this.getProjects();
+            this.loadWatercorp();
+        },
+        methods: {
+            getProjects: function () {
+                var vm = this;
+                var url = 'http://localhost:2904/api/701/Project/SearchAll';
+                axios.get(url, {
+                    params: {
+                        watercorpid: vm.watercorpid,
+                        areaid: vm.areaId,
+                        gardenid: vm.gardenId,
+                        projectNumber: vm.projectNumber,
+                        projectEndDate: vm.projectEndDate,
+                        projectStartDate: vm.projectStartDate,
+                        declarer: vm.declarer
+                    }
+                })
+                    .then(function (response) {
+                        alert(1)
+                        console.log(response.data);
+
+                        vm.dataList = response.data;
+                        vm.tableData = response.data;
+                        vm.pageTotal = response.data.length
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            getProjectby: function () {
+                var vm = this;
+                axios.get("http://localhost:2904/api/701/Project/SearchByProjectId", {
+                    params: {
+                        areaid: 26,
+                        gardenid: 0,
+                        id: 67301
+                    }
+                })
+                    .then(function (response) {
+                        alert(2)
+                        console.log(response.data);
+                        vm.dataList = response.data;
+                        vm.tableData = response.data;
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            putProject: function () {
+                alert("put-1")
+                var vm = this;
+                axios.put("http://localhost:2904/api/701/Project/2")
+                    .then(function (response) {
+                        alert("put-2")
+                        //  console.log(response.data);
+                        // vm.dataList = response.data;
+
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            postProject: function () {
+                alert("post-1")
+                var vm = this;
+                axios.post("http://localhost:2904/api/701/Project", {
+                    id: 2,
+                    projectNumber: "002",
+                    projectDate: "2017-03-06T00:00:00",
+                    declarer: "test",
+                    waterCorpId: 0,
+                    areaId: 54310,
+                    gardenId: 57055,
+                    waterSupplyType: 0,
+                    simcardOwner: 0,
+                    builderType: 0,
+                    isRenewal: 0,
+                    content: "put"
+                })
+                    .then(function (response) {
+                        alert("post-2")
+                        //   console.log(response.data);
+                        // vm.dataList = response.data;
+
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            deleteProject: function () {
+                var vm = this;
+                alert("delete-1")
+                axios.delete("http://localhost:2904/api/701/Project/1")
+                    .then(function (response) {
+                        alert("delete-2")
+                        this.getProjects();
+                        console.log(response.data);
+                        vm.dataList = response.data;
+                        vm.tableData = response.data;
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            loadWatercorp: function () {
+                var vm = this;
+                var url = 'http://localhost:2904/api/Customer';
+                axios.get(url)
+                    .then(function (response) {
+                        alert("loadWatercorp")
+                        console.log(response.data);
+
+                        vm.watercorp_options = response.data;
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            handleNodeClick(data) {
+                this.css()
+                console.log(data);
+            },
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            },
+            handleSizeChange(val) {
+                getProjects()
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                console.log(`当前页: ${val}`);
+            }
+        },
+        watch: {
+            watercorpid: function (val) {
+
+                var vm = this;
+                var url = 'http://localhost:2904/api/' + val + '/Area';
+                axios.get(url)
+                    .then(function (response) {
+
+                        console.log(response.data);
+
+                        vm.area_options = response.data;
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            areaId: function (val) {
+                var vm = this;
+
+
+                var url = 'http://localhost:2904/api/' + this.watercorpid + '/Garden/' + val;
+                axios.get(url)
+                    .then(function (response) {
+
+                        console.log(response.data);
+
+                        vm.garden_options = response.data;
+                    })
+                    .catch(function (error) {
+                    });
+            }
+        }
+    })
+</script>
+
+</html>

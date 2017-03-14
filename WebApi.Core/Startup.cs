@@ -54,6 +54,14 @@ namespace WebApi.Core
                     "WebApi.Core.xml")); // 注意：此处替换成所生成的XML documentation的文件名。
                 options.DescribeAllEnumsAsStrings();
             });
+            #region 跨域
+            var urls = "http://localhost:5870";//Configuration["AppConfig:Cores"].Split(',');
+            services.AddCors(options =>
+            options.AddPolicy("AllowSameDomain",
+        builder => builder.WithOrigins(urls).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials()));
+
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -69,6 +77,8 @@ namespace WebApi.Core
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUi();
+
+            app.UseCors("AllowSameDomain");
         }
     }
 }
