@@ -55,7 +55,7 @@ namespace WebApi.Core
                 options.DescribeAllEnumsAsStrings();
             });
             #region 跨域
-            var urls = "http://localhost:5870";//Configuration["AppConfig:Cores"].Split(',');
+            var urls = "";//Configuration["AppConfig:Cores"].Split(',');
             services.AddCors(options =>
             options.AddPolicy("AllowSameDomain",
         builder => builder.WithOrigins(urls).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials()));
